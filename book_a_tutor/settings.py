@@ -29,6 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = [
     '127.0.0.1',  # vs code preview
@@ -93,6 +94,16 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # allow authentication using either usernames or emails
+ACCOUNT_EMAIL_REQUIRED = True  # email is required to register for the site
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # verifying email is mandatory
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+ACCOUNT_USERNAME_MIN_LENGTH = 4  # minimum username length of four characters
+LOGIN_URL = '/accounts/login/'  # specify a login url and a
+LOGIN_REDIRECT_URL = '/'  # url to redirect back to after logging in
 
 WSGI_APPLICATION = 'book_a_tutor.wsgi.application'
 
