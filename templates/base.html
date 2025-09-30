@@ -1,7 +1,4 @@
 {% load static %}
-{% url 'account_login' as login_url %}
-{% url 'account_signup' as signup_url %} 
-{% url 'account_logout' as logout_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,16 +20,14 @@
       rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
       >
+      <!-- importcustom css -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" >
     {% endblock %}
     
     {% block extra_css %}
-    
-    {% endblock %}
+    {% endblock %} 
 
-    <!-- import css -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" >
-
-    
+     <!-- Favicon imports -->
     
     {% block corejs %}
        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -46,7 +41,11 @@
     <title>Book a Tutor {% block extra_title %}{% endblock %}</title>
   </head>
   <body>
+    {% include 'includes/header.html' %}
+
     <header class="container-fluid fixed-top"></header>
+
+    <main class="container mt-4"></main>
 
     {% if messages %}
        <div class="message-container"></div>
@@ -60,8 +59,14 @@
     
     {% block postloadjs %}
     {% endblock %}
-    
 
+
+    {% include 'includes/footer.html' %}
+
+    <!-- Font awsome kit -->
+    <script
+      src="https://kit.fontawesome.com/bd728e390a.js"
+      crossorigin="anonymous"></script>
 
   </body>
 </html>
