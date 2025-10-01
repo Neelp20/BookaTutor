@@ -48,16 +48,16 @@
 
     <header class="container-fluid fixed-top"></header>
 
-    <main class="container mt-4"></main>
+    <main class="container mt-4">
+      {% block content %}
+      {% endblock %}
+    </main>
 
     {% if messages %}
        <div class="message-container"></div>
     {% endif %}
 
     {% block page_header %}
-    {% endblock %}
-
-    {% block content %}
     {% endblock %}
     
     {% block postloadjs %}

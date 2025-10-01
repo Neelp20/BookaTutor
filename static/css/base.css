@@ -1,9 +1,21 @@
-html {
+html, body {
     height: 100%;
 }
 
 body {
-    background: url('/media/home-background.jpg') no-repeat center center fixed;
+    display: flex;
+    flex-direction: column;
+}
+
+/* homepage */
+.hero-image {
+    background-image: url("../images/home-background.jpg");
     background-size: cover;
-    height: calc(100vh - 164px);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 70vh;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* color: white; */
 }
