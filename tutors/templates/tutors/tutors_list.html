@@ -1,2 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Available Tutors</h2>
+    <div class="row">
+        {% for tutor in tutors %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                {% if tutor.profile_picture %}
+                    <img src="{{ tutor.profile_picture.url }}" class="card-img-top" alt="{{ tutor.user.username }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ tutor.user.get_full_name|default:tutor.user.username }}</h5>
+                    <p class="card-text"><strong>Subject:</strong> {{ tutor.subject }}</p>
+                    <p class="card-text"><strong>Rate:</strong> ${{ tutor.hourly_rate }}/hr</p>
+                    <a href="{% url 'tutor-detail' tutor.pk %}" class="btn btn-primary">View Profile</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No tutors available right now.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
