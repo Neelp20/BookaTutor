@@ -1,27 +1,64 @@
 {% load static %}
 
 <header>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand" href="{% url 'home' %}">Book a Tutor</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  {% with request.resolver_match.url_name as url_name %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <img src="{% static 'images/logo.webp' %}" alt="Book a Tutor Logo" class="logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'tutors_list' %}">Tutors</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'bookings' %}">Bookings</a></li>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav me-2 mb-2">
 
-        {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Logout</a></li>
-        {% else %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a></li>
-        {% endif %}
-      </ul>
+          <!-- Home -->
+          <li class="nav-item">
+            <a class="nav-link {% if url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+          </li>
+
+          <!-- Tutors -->
+          <li class="nav-item">
+            <a class="nav-link {% if url_name == 'tutors_list' %}active{% endif %}" href="{% url 'tutors_list' %}">Tutors</a>
+          </li>
+
+          {% if user.is_authenticated %}
+            <!-- Username Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                {{ user.username }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{% url 'bookings' %}">Create Booking</a></li>
+                <li><a class="dropdown-item" href="{% url 'manage-bookings' %}">Upcoming Bookings</a></li>
+                <li><a class="dropdown-item" href="{% url 'past-bookings' %}">Past Bookings</a></li>
+                {% if user.is_superuser %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'admin-manage-bookings' %}">All Bookings (Admin)</a></li>
+                {% endif %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <!-- Guest links -->
+            <li class="nav-item">
+              <a class="nav-link {% if url_name == 'account_signup' %}active{% endif %}" href="{% url 'account_signup' %}">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if url_name == 'account_login' %}active{% endif %}" href="{% url 'account_login' %}">Login</a>
+            </li>
+          {% endif %}
+
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+  {% endwith %}
 </header>
+
+
+
