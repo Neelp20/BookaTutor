@@ -1,2 +1,15 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% load static %}
+
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4 text-center">Edit Tutor Profile</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Update Profile</button>
+    <a href="{% url 'tutor-detail' tutor.pk %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
