@@ -54,11 +54,11 @@ INSTALLED_APPS = [
 
     'home',
     'tutors',
-    'bookings'
+    'bookings',
 
     # other
-    'crispy_forms'
-    'storages'
+    'crispy_forms',
+    # 'storages',
 ]
 
 MIDDLEWARE = [

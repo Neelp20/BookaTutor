@@ -1,6 +1,6 @@
 from django.urls import path
-from . import TutorListView, TutorDetailView, TutorCreateView
-from . import TutorUpdateView, TutorDeleteView
+from .views import TutorListView, TutorDetailView, TutorCreateView
+from .views import TutorUpdateView, TutorDeleteView
 
 
 urlpatterns = [
