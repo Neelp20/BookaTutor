@@ -1,1 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
 
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-danger">Delete Booking</h2>
+    <p>Are you sure you want to delete your booking with <strong>{{ object.tutor.user.get_full_name }}</strong> on <strong>{{ object.timeslot.date }}</strong> at <strong>{{ object.timeslot.start_time }} - {{ object.timeslot.end_time }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'manage-bookings' %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-danger">Delete Booking</button>
+    </form>
+</div>
+{% endblock %}
