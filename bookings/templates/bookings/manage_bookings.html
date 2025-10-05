@@ -1,1 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
 
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">My Upcoming Bookings</h2>
+
+    {% if bookings %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tutor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.tutor.user.get_full_name }}</td>
+                    <td>{{ booking.timeslot.date }}</td>
+                    <td>{{ booking.timeslot.start_time }} - {{ booking.timeslot.end_time }}</td>
+                    <td>{{ booking.subject }}</td>
+                    <td>{{ booking.message|default:"-" }}</td>
+                    <td>
+                        <a href="{% url 'edit-booking' booking.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete-booking' booking.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no upcoming bookings. <a href="{% url 'bookings' %}">Book a tutor now.</a></p>
+    {% endif %}
+</div>
+{% endblock %}
