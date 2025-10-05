@@ -1,1 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">My Past Bookings</h2>
+
+    {% if bookings %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tutor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.tutor.user.get_full_name }}</td>
+                    <td>{{ booking.timeslot.date }}</td>
+                    <td>{{ booking.timeslot.start_time }} - {{ booking.timeslot.end_time }}</td>
+                    <td>{{ booking.subject }}</td>
+                    <td>{{ booking.message|default:"-" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no past bookings.</p>
+    {% endif %}
+</div>
+{% endblock %}
 
