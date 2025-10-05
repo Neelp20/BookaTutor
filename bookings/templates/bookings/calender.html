@@ -1,1 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Tutor Availability Calendar</h2>
+    <div id="calendar"></div>
+</div>
+
+<!-- FullCalendar CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+<!-- Embed Django context safely -->
+<script id="event-data" type="application/json">
+  {{ events|safe }}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+
+    // Safely parse embedded JSON
+    const rawData = document.getElementById('event-data').textContent;
+    const events = JSON.parse(rawData);
+
+    // Add tooltip text
+    events.forEach(function(ev) {
+        if (ev.color === '#28a745') {
+            ev.title += ' (Free)';
+        } else {
+            ev.title += ' (Booked)';
+        }
+    });
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: events,
+        height: 650,
+
+        eventClick: function(info) {
+            if (info.event.url && info.event.color === '#28a745') {
+                window.location.href = info.event.url;
+                info.jsEvent.preventDefault();
+            } else {
+                alert("This slot is already booked. Please choose another.");
+                info.jsEvent.preventDefault();
+            }
+        },
+
+        eventMouseEnter: function(info) {
+            const tooltip = document.createElement('div');
+            tooltip.id = 'calendar-tooltip';
+            tooltip.style.position = 'absolute';
+            tooltip.style.background = '#333';
+            tooltip.style.color = '#fff';
+            tooltip.style.padding = '5px 10px';
+            tooltip.style.borderRadius = '5px';
+            tooltip.style.zIndex = 1000;
+            tooltip.innerHTML = info.event.title;
+            document.body.appendChild(tooltip);
+
+            info.el.addEventListener('mousemove', function(e) {
+                tooltip.style.top = (e.pageY + 10) + 'px';
+                tooltip.style.left = (e.pageX + 10) + 'px';
+            });
+        },
+
+        eventMouseLeave: function(info) {
+            const tooltip = document.getElementById('calendar-tooltip');
+            if (tooltip) tooltip.remove();
+        }
+    });
+
+    calendar.render();
+});
+</script>
+{% endblock %}
 
