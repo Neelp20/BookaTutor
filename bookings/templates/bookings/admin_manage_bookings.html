@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">All Bookings (Admin)</h2>
+
+    {% if bookings %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Tutor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.student.get_full_name }}</td>
+                    <td>{{ booking.tutor.user.get_full_name }}</td>
+                    <td>{{ booking.timeslot.date }}</td>
+                    <td>{{ booking.timeslot.start_time }} - {{ booking.timeslot.end_time }}</td>
+                    <td>{{ booking.subject }}</td>
+                    <td>{{ booking.message|default:"-" }}</td>
+                    <td>{{ booking.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %}
+</div>
+{% endblock %}

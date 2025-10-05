@@ -4,7 +4,7 @@
   {% with request.resolver_match.url_name as url_name %}
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <!-- Logo -->
+      
       <a class="navbar-brand" href="{% url 'home' %}">
         Book a Tutor
       </a>
@@ -17,12 +17,14 @@
 
           <!-- Home -->
           <li class="nav-item">
-            <a class="nav-link {% if url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+            <a class="nav-link {% if url_name == 'home' %}active{% endif %}" 
+            href="{% url 'home' %}">Home</a>
           </li>
 
           <!-- Tutors -->
           <li class="nav-item">
-            <a class="nav-link {% if url_name == 'tutors-list' %}active{% endif %}" href="{% url 'tutors-list' %}">Tutors</a>
+            <a class="nav-link {% if url_name == 'tutors-list' %}active{% endif %}" 
+            href="{% url 'tutors-list' %}">Tutors</a>
           </li>
 
           {% if user.is_authenticated %}
@@ -35,7 +37,7 @@
                 <li><a class="dropdown-item" href="{% url 'bookings' %}">Create Booking</a></li>
                 <li><a class="dropdown-item" href="{% url 'manage-bookings' %}">Upcoming Bookings</a></li>
                 <li><a class="dropdown-item" href="{% url 'past-bookings' %}">Past Bookings</a></li>
-                <li><a class="dropdown-item text-danger" href="{% url 'confirm-delete-booking' %}">Cancel a Booking</a></li>
+                <li><a class="dropdown-item text-danger" href="{% url 'manage-bookings' %}">Cancel a Booking</a></li>
 
                 {% if user.is_superuser %}
                   <li><hr class="dropdown-divider"></li>
@@ -46,7 +48,8 @@
 
             <!-- Tutor Profile Dropdown -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle {% if url_name in 'create-tutor edit-tutor delete-tutor tutor-detail' %}active{% endif %}" href="#" id="tutorDropdown" role="button" data-bs-toggle="dropdown">
+              <a class="nav-link dropdown-toggle {% if url_name in 'create-tutor edit-tutor delete-tutor tutor-detail' %}active{% endif %}" 
+              href="#" id="tutorDropdown" role="button" data-bs-toggle="dropdown">
                 Tutor Profile
               </a>
               <ul class="dropdown-menu dropdown-menu-end">

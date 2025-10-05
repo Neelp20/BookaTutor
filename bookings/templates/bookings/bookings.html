@@ -1,2 +1,55 @@
 {% extends "base.html" %}
 {% load static %}
+
+<div class="mb-3">
+    <label for="{{ form.tutor.id_for_label }}" class="form-label">Tutor</label>
+    {{ form.tutor|add_class:"form-select" }}
+</div>
+
+<div class="mb-3">
+    <label for="{{ form.timeslot.id_for_label }}" class="form-label">Available Time Slot</label>
+    <select name="{{ form.timeslot.html_name }}" class="form-select" id="id_timeslot">
+        {% for slot in form.fields.timeslot.queryset %}
+            <option value="{{ slot.id }}" 
+                data-tutor="{{ slot.tutor.id }}"
+                {% if form.initial.timeslot == slot.id %}selected{% endif %}>
+                {{ slot.date }} {{ slot.start_time }} - {{ slot.end_time }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const tutorSelect = document.getElementById("id_tutor");
+    const timeslotSelect = document.getElementById("id_timeslot");
+
+    function filterTimeslots() {
+        const selectedTutor = tutorSelect.value;
+        for (let option of timeslotSelect.options) {
+            // Show only timeslots for selected tutor
+            if(option.dataset.tutor === selectedTutor){
+                option.style.display = "block";
+            } else {
+                option.style.display = "none";
+            }
+            // Remove previous highlight
+            option.classList.remove("selected-slot");
+        }
+
+        // Highlight pre-selected timeslot
+        const selectedSlotId = "{{ form.initial.timeslot|default_if_none:'' }}";
+        if(selectedSlotId){
+            const slotOption = timeslotSelect.querySelector(`option[value='${selectedSlotId}']`);
+            if(slotOption && slotOption.dataset.tutor === selectedTutor){
+                slotOption.classList.add("selected-slot");
+                timeslotSelect.value = slotOption.value; // ensure selection
+            }
+        }
+    }
+
+    tutorSelect.addEventListener("change", filterTimeslots);
+    filterTimeslots();  // initial run
+});
+</script>
+
