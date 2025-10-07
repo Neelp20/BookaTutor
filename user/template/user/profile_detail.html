@@ -1,19 +1,18 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
 <div class="container mt-5">
   <h2>My Profile</h2>
-  <div class="card p-4 shadow-sm">
-    {% if user.profile.profile_image %}
-      <img src="{{ user.profile.profile_image.url }}" class="rounded-circle mb-3" width="120" height="120">
-    {% endif %}
+  <div class="card p-3">
     <p><strong>Username:</strong> {{ user.username }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Type:</strong> {{ user.profile.get_user_type_display }}</p>
-    <p><strong>Phone:</strong> {{ user.profile.phone }}</p>
-    <p><strong>Location:</strong> {{ user.profile.location }}</p>
-    <p><strong>Subjects:</strong> {{ user.profile.subjects }}</p>
-    <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+    <p><strong>Phone:</strong> {{ user.userprofile.phone|default:"-" }}</p>
+    <p><strong>Address:</strong> {{ user.userprofile.address|default:"-" }}</p>
+    <p><strong>City:</strong> {{ user.userprofile.city|default:"-" }}</p>
+    <p><strong>Country:</strong> {{ user.userprofile.country|default:"-" }}</p>
+    <p><strong>Bio:</strong> {{ user.userprofile.bio|default:"No bio provided" }}</p>
+
     <a href="{% url 'profile-edit' %}" class="btn btn-primary mt-3">Edit Profile</a>
   </div>
 </div>
 {% endblock %}
+

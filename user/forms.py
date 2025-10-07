@@ -1,11 +1,8 @@
 from django import forms
-from .models import Profile
+from .models import UserProfile
 
 
-class ProfileForm(forms.ModelForm):
+class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = Profile
-        fields = ['user_type', 'bio', 'phone', 'location', 'subjects', 'profile_image']
-        widgets = {
-            'bio': forms.Textarea(attrs={'rows': 3}),
-        }
+        model = UserProfile
+        fields = ['phone', 'address', 'city', 'country', 'bio']
