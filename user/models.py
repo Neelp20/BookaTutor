@@ -18,10 +18,6 @@ class UserProfile(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
-    profile_image = models.ImageField(
-        upload_to='profiles/', blank=True, null=True
-        )
 
     def __str__(self):
         return f"{self.user.username} ({self.get_role_display()})"
@@ -34,4 +30,3 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
     else:
         instance.userprofile.save()
-
