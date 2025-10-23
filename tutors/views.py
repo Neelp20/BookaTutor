@@ -2,6 +2,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from .models import Tutor
 from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -32,9 +34,13 @@ class TutorCreateView(CreateView):
     model = Tutor
     fields = ['bio', 'subjects', 'hourly_rate', 'availability']  
     template_name = "tutors/create_tutor.html"
-    success_url = reverse_lazy('tutor-list')
+    success_url = reverse_lazy('tutors-list')
 
     def form_valid(self, form):
+        tutor_exists = Tutor.objects.filter(user=self.request.user).exists()
+        if tutor_exists:
+            messages.error(self.request, "You already have a tutor profile.")
+            return redirect('tutors-list')
         # Auto-link tutor to logged in user
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -46,7 +52,7 @@ class TutorUpdateView(UpdateView):
     model = Tutor
     fields = ['bio', 'subjects', 'hourly_rate', 'availability']
     template_name = "tutors/update_tutor.html"
-    success_url = reverse_lazy('tutor-list')
+    success_url = reverse_lazy('tutors-list')
 
     def get_queryset(self):
         # Only allow tutors to edit their own profile
@@ -58,7 +64,7 @@ class TutorDeleteView(DeleteView):
     """Delete a tutor profile"""
     model = Tutor
     template_name = "tutors/delete_tutor.html"
-    success_url = reverse_lazy('tutor-list')
+    success_url = reverse_lazy('tutors-list')
 
     def get_queryset(self):
         # Tutors can only delete their own profile

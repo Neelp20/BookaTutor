@@ -12,8 +12,8 @@ class Subject(models.Model):
         """ Order by name """
         ordering = ['name']
 
-        def __str__(self):
-            return self.name
+    def __str__(self):
+        return self.name
 
 
 class Tutor(models.Model):
