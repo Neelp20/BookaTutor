@@ -39,3 +39,9 @@ body {
   z-index: 1050; /* Bootstrap default for navbars */
   position: relative;
 }
+
+/* newsletter */
+.alert {
+  transition: opacity 0.6s ease-out;
+}
+

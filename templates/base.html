@@ -66,8 +66,16 @@
     </main>
 
     {% if messages %}
-       <div class="message-container"></div>
+      <div id="messages-container" class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050; width: 90%; max-width: 600px;">
+        {% for message in messages %}
+         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+           {{ message }}
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+        {% endfor %}
+      </div>
     {% endif %}
+
 
     {% block page_header %}
     {% endblock %}
@@ -82,6 +90,18 @@
     <script
       src="https://kit.fontawesome.com/bd728e390a.js"
       crossorigin="anonymous"></script>
+
+    <script>
+      // Auto-hide alerts after 4 seconds
+      setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        });
+      }, 4000);
+    </script>
+
 
   </body>
 </html>

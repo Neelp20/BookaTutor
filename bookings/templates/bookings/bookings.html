@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% block content %}
+
+
 
 <div class="mb-3">
     <label for="{{ form.tutor.id_for_label }}" class="form-label">Tutor</label>
-    {{ form.tutor|add_class:"form-select" }}
+    {{ form.tutor }}
 </div>
 
 <div class="mb-3">
@@ -18,6 +21,10 @@
         {% endfor %}
     </select>
 </div>
+
+{% endblock %}
+
+{% block postloadjs %}
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -52,4 +59,5 @@ document.addEventListener("DOMContentLoaded", function() {
     filterTimeslots();  // initial run
 });
 </script>
+{% endblock %}
 

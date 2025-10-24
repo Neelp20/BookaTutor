@@ -1,12 +1,31 @@
 {% load static %}
+{% now "Y" as year %}
+
 
 <!-- footer.html -->
-<footer class="bg-dark text-white text-center py-3 mt-4">
+<footer class="bg-dark text-white text-center py-4 mt-4">
   <div class="container">
+
+    <!-- Newsletter Section -->
+    <div class="newsletter mb-4">
+      <h5>Subscribe to our Newsletter</h5>
+      <form method="POST" action="{% url 'subscribe-newsletter' %}" class="d-flex justify-content-center mt-3">
+        {% csrf_token %}
+        <div class="col-md-4">
+          <input type="email" name="email" class="form-control" placeholder="Enter your email..." required>
+        </div>
+        <button type="submit" class="btn btn-outline-light ms-2">Subscribe</button>
+      </form>
+    </div>
+
+    <!-- Footer Info -->
     <p class="mb-1">&copy; {{ year }} Book a Tutor. All Rights Reserved.</p>
     <p class="small">Made with ❤️ using Django</p>
-    <p><a href="https://www.facebook.com/yourpageurl" target="_blank">
-      <i class="fab fa-facebook"></i>
-      Visit our Facebook Page</a></p>
+    <p>
+      <a href="https://www.facebook.com/yourpageurl" target="_blank" class="text-white">
+        <i class="fab fa-facebook"></i> Visit our Facebook Page
+      </a>
+    </p>
   </div>
 </footer>
+
