@@ -1,31 +1,38 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Tutor
-from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import redirect
+from .models import Tutor, Subject
 
-# Create your views here.
-
-
-# def tutors_list(request):
-#     """View to list all tutors"""
-#     return render(request, 'tutors/tutors_list.html')
 
 # tutors_list.html
 class TutorListView(ListView):
-    """Display all tutors"""
+    """Display all tutors, with optional subject filter"""
     model = Tutor
     template_name = "tutors/tutors_list.html"
     context_object_name = "tutors"
 
     def get_queryset(self):
         user = self.request.user
-        # If the current user is admin, show all tutors
-        if user.is_superuser:
-            return Tutor.objects.all()
-        # Otherwise, hide staff/superuser tutors
-        return Tutor.objects.filter(user__is_superuser=False, user__is_staff=False)
+        queryset = Tutor.objects.all()
+
+        # Hide admin/staff tutors for non-admin users
+        if not user.is_superuser:
+            queryset = queryset.filter(user__is_superuser=False, user__is_staff=False)
+
+        # Subject filter
+        subject_filter = self.request.GET.get('subject')
+        if subject_filter:
+            queryset = queryset.filter(subjects__name__iexact=subject_filter)
+
+        return queryset.distinct()
+
+    def get_context_data(self, **kwargs):
+        """Add subjects to context for dropdown filter"""
+        context = super().get_context_data(**kwargs)
+        context['subjects'] = Subject.objects.all()
+        context['selected_subject'] = self.request.GET.get('subject', '')
+        return context
 
 
 # tutor_detail.html
@@ -40,7 +47,7 @@ class TutorDetailView(DetailView):
 class TutorCreateView(CreateView):
     """Create a tutor profile"""
     model = Tutor
-    fields = ['bio', 'subjects', 'hourly_rate', 'availability']  
+    fields = ['bio', 'subjects', 'hourly_rate', 'availability']
     template_name = "tutors/create_tutor.html"
     success_url = reverse_lazy('tutors-list')
 
@@ -49,7 +56,6 @@ class TutorCreateView(CreateView):
         if tutor_exists:
             messages.error(self.request, "You already have a tutor profile.")
             return redirect('tutors-list')
-        # Auto-link tutor to logged in user
         form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -63,7 +69,6 @@ class TutorUpdateView(UpdateView):
     success_url = reverse_lazy('tutors-list')
 
     def get_queryset(self):
-        # Only allow tutors to edit their own profile
         return Tutor.objects.filter(user=self.request.user)
 
 
@@ -75,5 +80,5 @@ class TutorDeleteView(DeleteView):
     success_url = reverse_lazy('tutors-list')
 
     def get_queryset(self):
-        # Tutors can only delete their own profile
         return Tutor.objects.filter(user=self.request.user)
+

@@ -5,18 +5,40 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center fw-bold">Available Tutors</h2>
 
+    <!-- 📚 Subject Filter -->
+    <form method="get" class="row g-3 mb-4 justify-content-center">
+        <div class="col-md-4">
+            <select name="subject" class="form-select">
+                <option value="">All Subjects</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.name }}" {% if subject.name == selected_subject %}selected{% endif %}>
+                        {{ subject.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+        <div class="col-md-2 d-grid">
+            <a href="{% url 'tutors-list' %}" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+
+    <!-- 🧑‍🏫 Tutors Grid -->
     <div class="row g-4">
         {% for tutor in tutors %}
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0 rounded-3">
-                <!-- Profile Image -->
                 <div class="text-center mt-3">
                     {% if tutor.profile_image %}
-                        <img src="{{ tutor.profile_image.url }}" alt="{{ tutor.user.username }}" 
-                             class="img-fluid rounded-circle shadow-sm" style="width:120px; height:120px; object-fit:cover;">
+                        <img src="{{ tutor.profile_image.url }}" alt="{{ tutor.user.username }}"
+                             class="img-fluid rounded-circle shadow-sm"
+                             style="width:120px; height:120px; object-fit:cover;">
                     {% else %}
                         <img src="{% static 'images/default-profile.png' %}" alt="Default profile"
-                             class="img-fluid rounded-circle shadow-sm" style="width:120px; height:120px; object-fit:cover;">
+                             class="img-fluid rounded-circle shadow-sm"
+                             style="width:120px; height:120px; object-fit:cover;">
                     {% endif %}
                 </div>
 
@@ -53,17 +75,16 @@
                     </p>
 
                     <!-- Hourly Rate -->
-                    <p class="mb-3">
-                        <strong>Rate:</strong> ${{ tutor.hourly_rate }}/hr
-                    </p>
+                    <p class="mb-3"><strong>Rate:</strong> ${{ tutor.hourly_rate }}/hr</p>
 
                     <a href="{% url 'tutor-detail' tutor.pk %}" class="btn btn-primary w-75">View Profile</a>
                 </div>
             </div>
         </div>
         {% empty %}
-        <p class="text-center text-muted">No tutors available at the moment.</p>
+        <p class="text-center text-muted">No tutors found for this subject.</p>
         {% endfor %}
     </div>
 </div>
 {% endblock %}
+
