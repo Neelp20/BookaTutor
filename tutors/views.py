@@ -18,7 +18,8 @@ class TutorListView(ListView):
 
         # Hide admin/staff tutors for non-admin users
         if not user.is_superuser:
-            queryset = queryset.filter(user__is_superuser=False, user__is_staff=False)
+            queryset = queryset.filter(
+                user__is_superuser=False, user__is_staff=False)
 
         # Subject filter
         subject_filter = self.request.GET.get('subject')

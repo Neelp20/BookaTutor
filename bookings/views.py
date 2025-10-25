@@ -40,11 +40,13 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('manage-bookings')
 
     def get_form_kwargs(self):
+        """Pass the current user to the form for filtering available tutors and timeslots"""
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
 
     def get_initial(self):
+        """Pre-fill tutor and slot if passed in URL"""
         initial = super().get_initial()
         tutor_id = self.request.GET.get('tutor')
         slot_id = self.request.GET.get('slot')
@@ -55,6 +57,7 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
         return initial
 
     def form_valid(self, form):
+        """Assign student and show success message"""
         form.instance.student = self.request.user
         messages.success(self.request, "✅ Booking created successfully!")
         return super().form_valid(form)
