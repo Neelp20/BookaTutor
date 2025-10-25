@@ -1,27 +1,61 @@
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block content %}
-<div class="container mt-4">
-    <div class="card">
-        {% if tutor.profile_picture %}
-            <img src="{{ tutor.profile_picture.url }}" class="card-img-top" alt="{{ tutor.user.username }}">
-        {% endif %}
-        <div class="card-body">
-            <h3 class="card-title">{{ tutor.user.get_full_name|default:tutor.user.username }}</h3>
-            <p><strong>Subject:</strong> {{ tutor.subject }}</p>
-            <p><strong>Bio:</strong> {{ tutor.bio }}</p>
-            <p><strong>Hourly Rate:</strong> ${{ tutor.hourly_rate }}</p>
-            <p><strong>Experience:</strong> {{ tutor.experience }} years</p>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="row g-0">
+            <!-- Profile Image -->
+            <div class="col-md-4 text-center p-3">
+                {% if tutor.profile_image %}
+                    <img src="{{ tutor.profile_image.url }}" alt="{{ tutor.user.username }}" class="img-fluid rounded-circle shadow-sm" style="max-width: 200px;">
+                {% else %}
+                    <img src="{% static 'images/default-profile.png' %}" alt="Default profile" class="img-fluid rounded-circle shadow-sm" style="max-width: 200px;">
+                {% endif %}
+                <h4 class="mt-3">{{ tutor.user.get_full_name|default:tutor.user.username }}</h4>
+            </div>
+
+            <!-- Tutor Details -->
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title mb-3">{{ tutor.user.username|capfirst }}</h2>
+
+                    <p><strong>Subjects:</strong>
+                        {% if tutor.subjects.all %}
+                            {{ tutor.subjects.all|join:", " }}
+                        {% else %}
+                            <span class="text-muted">Not specified</span>
+                        {% endif %}
+                    </p>
+
+                    <p><strong>Bio:</strong>
+                        {% if tutor.bio %}
+                            {{ tutor.bio }}
+                        {% else %}
+                            <span class="text-muted">No bio available.</span>
+                        {% endif %}
+                    </p>
+
+                    <p><strong>Hourly Rate:</strong> ${{ tutor.hourly_rate }}</p>
+
+                    <p><strong>Experience:</strong>
+                        {% if tutor.years_of_experience %}
+                            {{ tutor.years_of_experience }} years
+                        {% else %}
+                            <span class="text-muted">N/A</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
     {% if request.user == tutor.user %}
-    <div class="mt-3">
+    <div class="mt-4 d-flex gap-3">
         <a href="{% url 'update-tutor' tutor.pk %}" class="btn btn-warning">Edit Profile</a>
         <a href="{% url 'delete-tutor' tutor.pk %}" class="btn btn-danger">Delete Profile</a>
     </div>
     {% endif %}
 </div>
 {% endblock %}
+
