@@ -2,14 +2,31 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="mb-4 text-danger">Delete Booking</h2>
-    <p>Are you sure you want to delete your booking with <strong>{{ object.tutor.user.get_full_name }}</strong> on <strong>{{ object.timeslot.date }}</strong> at <strong>{{ object.timeslot.start_time }} - {{ object.timeslot.end_time }}</strong>?</p>
+<div class="container mt-5 mb-5">
+    <div class="card shadow-sm border-danger">
+        <div class="card-body text-center py-5">
+            <h2 class="text-danger mb-4">Delete Booking</h2>
 
-    <form method="post">
-        {% csrf_token %}
-        <a href="{% url 'manage-bookings' %}" class="btn btn-secondary">Cancel</a>
-        <button type="submit" class="btn btn-danger">Delete Booking</button>
-    </form>
+            <p class="lead mb-4">
+                Are you sure you want to delete your booking with 
+                <strong>{{ object.tutor.user.get_full_name|default:object.tutor.user.username }}</strong> 
+                on <strong>{{ object.timeslot.date|date:"M d, Y" }}</strong> 
+                from <strong>{{ object.timeslot.start_time|time:"g:i a" }}</strong> 
+                to <strong>{{ object.timeslot.end_time|time:"g:i a" }}</strong>?
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'manage-bookings' %}" class="btn btn-secondary btn-lg">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        Delete Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}
