@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4 text-primary">Edit Your Booking</h2>
+
+  <div class="card shadow-sm p-4 mx-auto" style="max-width: 700px;">
+    <form method="POST">
+      {% csrf_token %}
+
+      <!-- Tutor -->
+      <div class="mb-3">
+        <label for="id_tutor" class="form-label">Tutor</label>
+        {{ form.tutor }}
+      </div>
+
+      <!-- Time Slot -->
+      <div class="mb-3">
+        <label for="id_timeslot" class="form-label">Available Time Slot</label>
+        <select name="timeslot" id="id_timeslot" class="form-select" required>
+          <option value="">---------</option>
+          {% for slot in form.fields.timeslot.queryset %}
+            <option value="{{ slot.id }}" data-tutor="{{ slot.tutor.id }}"
+                {% if form.instance.timeslot.id == slot.id %}selected{% endif %}>
+              {{ slot.date|date:"M d, Y" }} | {{ slot.start_time|time:"g:i a" }} - {{ slot.end_time|time:"g:i a" }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Subject -->
+      <div class="mb-3">
+        <label for="id_subject" class="form-label">Subject</label>
+        {{ form.subject }}
+      </div>
+
+      <!-- Message -->
+      <div class="mb-3">
+        <label for="id_message" class="form-label">Message (optional)</label>
+        {{ form.message }}
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'manage-bookings' %}" class="btn btn-secondary ms-2">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const tutorSelect = document.getElementById("id_tutor");
+  const timeslotSelect = document.getElementById("id_timeslot");
+
+  function filterTimeslots() {
+    const selectedTutor = tutorSelect.value;
+    for (let option of timeslotSelect.options) {
+      if (!option.dataset.tutor || option.dataset.tutor === selectedTutor || option.value === "") {
+        option.style.display = "block";
+      } else {
+        option.style.display = "none";
+      }
+    }
+  }
+
+  tutorSelect.addEventListener("change", filterTimeslots);
+  filterTimeslots();
+});
+</script>
+{% endblock %}
