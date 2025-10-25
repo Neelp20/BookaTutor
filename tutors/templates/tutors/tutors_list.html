@@ -13,8 +13,32 @@
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ tutor.user.get_full_name|default:tutor.user.username }}</h5>
-                    <p class="card-text"><strong>Subject:</strong> {{ tutor.subject }}</p>
-                    <p class="card-text"><strong>Rate:</strong> ${{ tutor.hourly_rate }}/hr</p>
+                    <p><strong>Subject:</strong>
+                      {% if tutor.subjects.all %}
+                        {{ tutor.subjects.all|join:", " }}
+                      {% else %}
+                       <span class="text-muted">Not specified</span>
+                      {% endif %}
+                    </p>
+
+                    <p><strong>Bio:</strong>
+                      {% if tutor.bio %}
+                        {{ tutor.bio|truncatechars:100 }}
+                      {% else %}
+                        <span class="text-muted">No bio provided.</span>
+                      {% endif %}
+                    </p>
+
+                    <p><strong>Experience:</strong>
+                      {% if tutor.years_of_experience %}
+                        {{ tutor.years_of_experience }} years
+                      {% else %}
+                        <span class="text-muted">N/A</span>
+                      {% endif %}
+                    </p>
+                    
+                    <p><strong>Rate:</strong> ${{ tutor.hourly_rate }}/hr</p>
+                    
                     <a href="{% url 'tutor-detail' tutor.pk %}" class="btn btn-primary">View Profile</a>
                 </div>
             </div>
