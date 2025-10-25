@@ -62,6 +62,20 @@
               </li>
             {% endif %}
 
+            <!-- Admin Management (superuser only) -->
+            {% if user.is_superuser %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle {% if url_name in 'admin-manage-bookings admin-tutor-list' %}active{% endif %}"
+                   href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
+                  Admin
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="{% url 'admin-manage-bookings' %}">Manage Bookings</a></li>
+                  <li><a class="dropdown-item" href="{% url 'tutors-list' %}">Manage Tutors</a></li>
+                </ul>
+              </li>
+            {% endif %}
+
             <!-- My Profile Dropdown (for all logged-in users) -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle {% if url_name in 'profile-detail profile-edit' %}active{% endif %}"
@@ -96,6 +110,7 @@
   </nav>
   {% endwith %}
 </header>
+
 
 
 

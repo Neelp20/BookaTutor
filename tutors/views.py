@@ -19,6 +19,14 @@ class TutorListView(ListView):
     template_name = "tutors/tutors_list.html"
     context_object_name = "tutors"
 
+    def get_queryset(self):
+        user = self.request.user
+        # If the current user is admin, show all tutors
+        if user.is_superuser:
+            return Tutor.objects.all()
+        # Otherwise, hide staff/superuser tutors
+        return Tutor.objects.filter(user__is_superuser=False, user__is_staff=False)
+
 
 # tutor_detail.html
 class TutorDetailView(DetailView):
