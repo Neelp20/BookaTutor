@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">My Profile</h2>
+
+    <div class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                {% if user.userprofile.profile_image %}
+                    <img src="{{ user.userprofile.profile_image.url }}" alt="Profile Image"
+                         class="img-fluid rounded-circle mb-3" style="width:150px; height:150px; object-fit:cover;">
+                {% else %}
+                    <img src="{% static 'images/default-profile.png' %}" alt="Default Profile"
+                         class="img-fluid rounded-circle mb-3" style="width:150px; height:150px; object-fit:cover;">
+                {% endif %}
+            </div>
+
+            <div class="col-md-9">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Full Name:</strong> {{ user.get_full_name|default:"Not provided" }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.userprofile.phone|default:"Not provided" }}</p>
+                <p><strong>Address:</strong> {{ user.userprofile.address|default:"Not provided" }}</p>
+                <p><strong>City:</strong> {{ user.userprofile.city|default:"Not provided" }}</p>
+                <p><strong>Country:</strong> {{ user.userprofile.country|default:"Not provided" }}</p>
+                <p><strong>Bio:</strong> {{ user.userprofile.bio|default:"No bio available." }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit Profile</a>
+    </div>
+</div>
+{% endblock %}
+
