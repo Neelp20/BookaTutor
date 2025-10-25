@@ -7,13 +7,13 @@
 
     <div class="card p-4 shadow-sm">
         <div class="row">
-            <div class="col-md-3 text-center">
+            <div class="col-md-3 text-center mb-4">
                 {% if user.userprofile.profile_image %}
-                    <img src="{{ user.userprofile.profile_image.url }}" alt="Profile Image"
-                         class="img-fluid rounded-circle mb-3" style="width:150px; height:150px; object-fit:cover;">
+                    <img src="{{ user.userprofile.profile_image.url }}" alt="{{ profile.username }}'s Profile Picture"
+                         class="rounded-circle shadow-sm" width="150" height="150">
                 {% else %}
-                    <img src="{% static 'images/default-profile.png' %}" alt="Default Profile"
-                         class="img-fluid rounded-circle mb-3" style="width:150px; height:150px; object-fit:cover;">
+                    <img src="{% static 'images/default-profile.png' %}" alt="Default Profile Picture"
+                         class="rounded-circle shadow-sm" width="150" height="150">
                 {% endif %}
             </div>
 
