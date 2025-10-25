@@ -2,49 +2,67 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Available Tutors</h2>
-    <div class="row">
+<div class="container mt-5">
+    <h2 class="mb-4 text-center fw-bold">Available Tutors</h2>
+
+    <div class="row g-4">
         {% for tutor in tutors %}
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                {% if tutor.profile_picture %}
-                    <img src="{{ tutor.profile_picture.url }}" class="card-img-top" alt="{{ tutor.user.username }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ tutor.user.get_full_name|default:tutor.user.username }}</h5>
-                    <p><strong>Subject:</strong>
-                      {% if tutor.subjects.all %}
-                        {{ tutor.subjects.all|join:", " }}
-                      {% else %}
-                       <span class="text-muted">Not specified</span>
-                      {% endif %}
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-3">
+                <!-- Profile Image -->
+                <div class="text-center mt-3">
+                    {% if tutor.profile_image %}
+                        <img src="{{ tutor.profile_image.url }}" alt="{{ tutor.user.username }}" 
+                             class="img-fluid rounded-circle shadow-sm" style="width:120px; height:120px; object-fit:cover;">
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" alt="Default profile"
+                             class="img-fluid rounded-circle shadow-sm" style="width:120px; height:120px; object-fit:cover;">
+                    {% endif %}
+                </div>
+
+                <div class="card-body text-center">
+                    <h4 class="card-title mt-3">{{ tutor.user.get_full_name|default:tutor.user.username }}</h4>
+
+                    <!-- Subjects -->
+                    <p class="text-muted mb-1">
+                        <strong>Subjects:</strong>
+                        {% if tutor.subjects.all %}
+                            {{ tutor.subjects.all|join:", " }}
+                        {% else %}
+                            Not specified
+                        {% endif %}
                     </p>
 
-                    <p><strong>Bio:</strong>
-                      {% if tutor.bio %}
-                        {{ tutor.bio|truncatechars:100 }}
-                      {% else %}
-                        <span class="text-muted">No bio provided.</span>
-                      {% endif %}
+                    <!-- Bio -->
+                    <p class="small mb-2">
+                        {% if tutor.bio %}
+                            {{ tutor.bio|truncatechars:100 }}
+                        {% else %}
+                            <span class="text-muted">No bio available.</span>
+                        {% endif %}
                     </p>
 
-                    <p><strong>Experience:</strong>
-                      {% if tutor.years_of_experience %}
-                        {{ tutor.years_of_experience }} years
-                      {% else %}
-                        <span class="text-muted">N/A</span>
-                      {% endif %}
+                    <!-- Experience -->
+                    <p class="mb-1">
+                        <strong>Experience:</strong>
+                        {% if tutor.years_of_experience %}
+                            {{ tutor.years_of_experience }} years
+                        {% else %}
+                            <span class="text-muted">N/A</span>
+                        {% endif %}
                     </p>
-                    
-                    <p><strong>Rate:</strong> ${{ tutor.hourly_rate }}/hr</p>
-                    
-                    <a href="{% url 'tutor-detail' tutor.pk %}" class="btn btn-primary">View Profile</a>
+
+                    <!-- Hourly Rate -->
+                    <p class="mb-3">
+                        <strong>Rate:</strong> ${{ tutor.hourly_rate }}/hr
+                    </p>
+
+                    <a href="{% url 'tutor-detail' tutor.pk %}" class="btn btn-primary w-75">View Profile</a>
                 </div>
             </div>
         </div>
         {% empty %}
-        <p>No tutors available right now.</p>
+        <p class="text-center text-muted">No tutors available at the moment.</p>
         {% endfor %}
     </div>
 </div>
