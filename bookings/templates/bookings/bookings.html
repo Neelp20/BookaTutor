@@ -1,76 +1,84 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Book a Session{% endblock %}
-
 {% block content %}
-<div class="container mt-4">
+<div class="container my-5">
   <h2 class="text-center mb-4">Book a Tutoring Session</h2>
 
-  <form method="POST" class="shadow p-4 rounded bg-light">
-    {% csrf_token %}
-    
-    <!-- Tutor -->
-    <div class="mb-3">
-      <label for="{{ form.tutor.id_for_label }}" class="form-label">Tutor</label>
-      {{ form.tutor }}
-    </div>
+  <div class="card shadow-sm p-4 mx-auto" style="max-width: 700px;">
+    <form method="POST">
+      {% csrf_token %}
 
-    <!-- Timeslot -->
-    <div class="mb-3">
-      <label for="{{ form.timeslot.id_for_label }}" class="form-label">Available Time Slot</label>
-      <select name="{{ form.timeslot.html_name }}" class="form-select" id="id_timeslot">
-        {% for slot in form.fields.timeslot.queryset %}
-          <option value="{{ slot.id }}"
-            data-tutor="{{ slot.tutor.id }}"
-            {% if form.initial.timeslot == slot.id %}selected{% endif %}>
-            {{ slot.date }} | {{ slot.start_time }} - {{ slot.end_time }}
-            ({{ slot.tutor.user.get_full_name }})
-          </option>
-        {% endfor %}
-      </select>
-    </div>
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          <strong>There was a problem:</strong>
+          {{ form.errors }}
+        </div>
+      {% endif %}
+          
+      <!-- Tutor -->
+      <div class="mb-3">
+        <label for="id_tutor" class="form-label">Tutor</label>
+        {{ form.tutor }}
+      </div>
 
-    <!-- Subject -->
-    <div class="mb-3">
-      <label for="{{ form.subject.id_for_label }}" class="form-label">Subject</label>
-      {{ form.subject }}
-    </div>
+      <!-- Timeslot -->
+      <div class="mb-3">
+        <label for="id_timeslot" class="form-label">Available Time Slot</label>
+        <select name="timeslot" id="id_timeslot" class="form-select" required>
+          <option value="">---------</option>
+          {% for slot in form.fields.timeslot.queryset %}
+            <option value="{{ slot.id }}" data-tutor="{{ slot.tutor.id }}">
+              {{ slot.date|date:"M d, Y" }} | {{ slot.start_time|time:"g:i a" }} - {{ slot.end_time|time:"g:i a" }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
 
-    <!-- Message -->
-    <div class="mb-3">
-      <label for="{{ form.message.id_for_label }}" class="form-label">Message (optional)</label>
-      {{ form.message }}
-    </div>
+      <!-- Subject -->
+      <div class="mb-3">
+        <label for="id_subject" class="form-label">Subject</label>
+        {{ form.subject }}
+      </div>
 
-    <!-- Submit -->
-    <div class="text-center mt-4">
-      <button type="submit" class="btn btn-success btn-lg">Book Session</button>
-    </div>
-  </form>
+      <!-- Message -->
+      <div class="mb-3">
+        <label for="id_message" class="form-label">Message (optional)</label>
+        {{ form.message }}
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Book Session</button>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
-
 
 {% block postloadjs %}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const tutorSelect = document.getElementById("id_tutor");
-    const timeslotSelect = document.getElementById("id_timeslot");
+  const tutorSelect = document.getElementById("id_tutor");
+  const timeslotSelect = document.getElementById("id_timeslot");
 
-    function filterTimeslots() {
-        const selectedTutor = tutorSelect.value;
-        for (let option of timeslotSelect.options) {
-            // Show only timeslots for selected tutor
-            option.style.display = (option.dataset.tutor === selectedTutor) ? "block" : "none";
-        }
-        timeslotSelect.value = "";
+  function filterTimeslots() {
+    const selectedTutor = tutorSelect.value;
+    for (let option of timeslotSelect.options) {
+      if (!option.dataset.tutor || option.dataset.tutor === selectedTutor || option.value === "") {
+        option.style.display = "block";
+      } else {
+        option.style.display = "none";
+      }
     }
+    timeslotSelect.value = ""; // reset selection
+  }
 
-    tutorSelect.addEventListener("change", filterTimeslots);
-    filterTimeslots();  // Run initially
+  tutorSelect.addEventListener("change", filterTimeslots);
+  filterTimeslots();
 });
 </script>
 {% endblock %}
+
+
 
 

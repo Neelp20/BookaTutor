@@ -64,6 +64,7 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
         return initial
 
     def form_valid(self, form):
+        print("DEBUG POST DATA:", form.data)
         form.instance.student = self.request.user
         return super().form_valid(form)
 
