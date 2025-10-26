@@ -35,6 +35,7 @@ class Booking(models.Model):
     message = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     confirmed = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('tutor', 'timeslot')

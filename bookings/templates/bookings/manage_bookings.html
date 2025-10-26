@@ -32,6 +32,8 @@
                         <td>
                             {% if booking.confirmed %}
                                 <span class="badge bg-success">Confirmed</span>
+                            {% elif booking.rejected %}
+                                <span class="badge bg-danger">Rejected</span>
                             {% else %}
                                 <span class="badge bg-warning text-dark">Pending</span>
                             {% endif %}

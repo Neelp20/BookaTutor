@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic import DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -147,7 +147,6 @@ class TutorBookingListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         ).order_by("timeslot__date", "timeslot__start_time")
 
 
-
 class BookingCalendarView(LoginRequiredMixin, TemplateView):
     template_name = 'bookings/calendar.html'
 
@@ -167,4 +166,38 @@ class BookingCalendarView(LoginRequiredMixin, TemplateView):
             })
         context['events'] = events
         return context
+
+
+class ConfirmBookingView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    """Allow tutors to confirm a pending booking."""
+    def test_func(self):
+        return hasattr(self.request.user, "userprofile") and self.request.user.userprofile.role == "tutor"
+
+    def post(self, request, pk, *args, **kwargs):
+        booking = get_object_or_404(Booking, pk=pk, tutor__user=request.user)
+        if booking.confirmed:
+            messages.info(request, "✅ This booking is already confirmed.")
+        else:
+            booking.confirmed = True
+            booking.save()
+            messages.success(request, f"✅ Booking with {booking.student.username} confirmed!")
+        return redirect("tutor-manage-bookings")
+
+
+class RejectBookingView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    """Allow tutors to reject a pending booking."""
+    def test_func(self):
+        return hasattr(self.request.user, "userprofile") and self.request.user.userprofile.role == "tutor"
+
+    def post(self, request, pk, *args, **kwargs):
+        booking = get_object_or_404(Booking, pk=pk, tutor__user=request.user)
+        if not hasattr(booking, "rejected"):
+            # Add rejected flag dynamically if not already in model
+            setattr(booking, "rejected", True)
+        else:
+            booking.rejected = True
+        booking.save()
+        messages.warning(request, f"❌ Booking with {booking.student.username} rejected.")
+        return redirect("tutor-manage-bookings")
+
 

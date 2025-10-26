@@ -16,4 +16,9 @@ urlpatterns = [
         'admin/manage/', views.AdminBookingListView.as_view(), name='admin-manage-bookings'),
     path(
         'tutor/manage/', views.TutorBookingListView.as_view(), name='tutor-manage-bookings'),
+    path(
+        'confirm/<int:pk>/', views.ConfirmBookingView.as_view(), name='confirm-booking'),
+    path(
+        'reject/<int:pk>/', views.RejectBookingView.as_view(), name='reject-booking'),
+
 ]
