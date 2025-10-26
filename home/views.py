@@ -5,6 +5,10 @@ from .forms import NewsletterForm
 # Create your views here.
 
 
+def home(request):
+    raise Exception("🔥 Manual test exception for 500 page")
+
+
 def index(request):
     """ A view to return the index page """
 
@@ -21,3 +25,11 @@ def subscribe_newsletter(request):
         else:
             messages.error(request, 'This email is already subscribed or invalid.')
     return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+
+def custom_500_view(request):
+    return render(request, '500.html', status=500)

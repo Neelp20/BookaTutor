@@ -33,7 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',  # vs code preview
-    # 'localhost',  # listen for stripe webhooks
+    'localhost',  # listen for stripe webhooks
     'book-a-tutor-e586c5d4d680.herokuapp.com',  # heroku application
 ]
 

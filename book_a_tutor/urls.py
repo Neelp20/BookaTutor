@@ -26,4 +26,7 @@ urlpatterns = [
     path('checkout/', include('checkout.urls')),
 ]
 
+# Custom error handlers
+handler404 = 'home.views.custom_404_view'
+handler500 = 'home.views.custom_500_view'
 
