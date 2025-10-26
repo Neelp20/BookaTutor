@@ -6,6 +6,11 @@ from bookings.models import Booking
 from .models import Payment
 import stripe
 
+try:
+    from stripe import error as stripe_error
+except ImportError:
+    import stripe._error as stripe_error
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -40,7 +45,7 @@ class CreateCheckoutSessionView(View):
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=request.build_absolute_uri('/checkout/success/?session_id={CHECKOUT_SESSION_ID}'),
+            success_url=request.build_absolute_uri('/checkout/success/') + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=request.build_absolute_uri('/checkout/cancel/'),
         )
 
@@ -59,20 +64,34 @@ class PaymentSuccessView(TemplateView):
 
         if session_id:
             try:
-                payment = Payment.objects.get(stripe_checkout_id=session_id)
-                payment.paid = True  # ✅ Correct field name
+                # ✅ Fetch full session from Stripe to confirm details
+                session = stripe.checkout.Session.retrieve(session_id)
+
+                # Match our Payment by the checkout ID
+                payment = Payment.objects.get(stripe_checkout_id=session.id)
+                payment.paid = True
+                payment.stripe_payment_intent = session.payment_intent
                 payment.save()
 
-                # Mark related booking as confirmed
+                # Mark related booking as confirmed if not already
                 booking = payment.booking
-                booking.confirmed = True
-                booking.save()
+                if not booking.confirmed:
+                    booking.confirmed = True
+                    booking.save()
 
                 messages.success(
                     request, "✅ Payment successful! Your booking is confirmed."
                 )
             except Payment.DoesNotExist:
-                messages.error(request, "⚠️ Payment record not found.")
+                messages.error(
+                    request,
+                    "⚠️ Payment record not found in database — please contact support."
+                )
+            except stripe_error.StripeError:
+                messages.error(
+                    request,
+                    "⚠️ Stripe session verification failed. Please refresh the page."
+                )
         else:
             messages.warning(request, "No session ID returned from Stripe.")
 

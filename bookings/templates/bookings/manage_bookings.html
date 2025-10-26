@@ -28,7 +28,7 @@
                         <td>{{ booking.subject|default:"-" }}</td>
                         <td>{{ booking.message|default:"-" }}</td>
 
-                        <!-- ✅ New: Confirmation Status -->
+                        <!-- ✅ Status -->
                         <td>
                             {% if booking.confirmed %}
                                 <span class="badge bg-success">Confirmed</span>
@@ -39,9 +39,24 @@
                             {% endif %}
                         </td>
 
+                        <!-- ✅ Actions -->
                         <td class="text-center">
-                            <a href="{% url 'edit-booking' booking.pk %}" class="btn btn-sm btn-warning me-2">Edit</a>
-                            <a href="{% url 'delete-booking' booking.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                            {% if booking.confirmed %}
+                                {% if booking.payment and booking.payment.paid %}
+                                    <span class="badge bg-success">Paid</span>
+                                {% else %}
+                                    <a href="{% url 'create-checkout-session' booking.id %}" class="btn btn-sm btn-primary mb-1">
+                                        Pay Now
+                                    </a>
+                                {% endif %}
+                            {% elif booking.rejected %}
+                                <span class="text-danger">Rejected</span>
+                            {% else %}
+                                <span class="text-muted">Awaiting Confirmation</span>
+                            {% endif %}
+                            <br>
+                            <a href="{% url 'edit-booking' booking.pk %}" class="btn btn-sm btn-warning mt-1 me-2">Edit</a>
+                            <a href="{% url 'delete-booking' booking.pk %}" class="btn btn-sm btn-danger mt-1">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -56,5 +71,6 @@
     {% endif %}
 </div>
 {% endblock %}
+
 
 
