@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4 text-center">My Upcoming Tutoring Sessions</h2>
+
+    {% if bookings %}
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Student</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Message</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.student.get_full_name|default:booking.student.username }}</td>
+                        <td>{{ booking.timeslot.date|date:"M d, Y" }}</td>
+                        <td>{{ booking.timeslot.start_time|time:"g:i a" }} - {{ booking.timeslot.end_time|time:"g:i a" }}</td>
+                        <td>{{ booking.subject|default:"-" }}</td>
+                        <td>{{ booking.message|default:"-" }}</td>
+                        <td>
+                            {% if booking.confirmed %}
+                                <span class="badge bg-success">Confirmed</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            You have no upcoming tutoring sessions.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

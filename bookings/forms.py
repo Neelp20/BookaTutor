@@ -13,31 +13,40 @@ class BookingForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(
                 attrs={'placeholder': 'Any message for your tutor', 'rows': 3}
-                ),
+            ),
         }
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        # Only future timeslots
-        future_slots = TimeSlot.objects.filter(
-            date__gte=timezone.now().date()).order_by('date', 'start_time'
-                                                      )
-        self.fields['timeslot'].queryset = future_slots
+        # ✅ Show all tutors
+        self.fields['tutor'].queryset = Tutor.objects.all().order_by('user__username')
 
-        # Tutors with at least one future slot
-        available_tutor_ids = future_slots.values_list(
-            'tutor_id', flat=True
-            ).distinct()
-        self.fields['tutor'].queryset = Tutor.objects.filter(
-            id__in=available_tutor_ids
-            )
+        # ✅ Show only future, unbooked timeslots
+        available_slots = TimeSlot.objects.filter(
+            date__gte=timezone.now().date(),
+            bookings__isnull=True
+        ).order_by('date', 'start_time')
 
-        # Pre-filter timeslots if tutor is pre-selected
-        initial = kwargs.get('initial', {})
-        if 'tutor' in initial:
-            self.fields['timeslot'].queryset = self.fields['timeslot'].queryset.filter(tutor=initial['tutor'])
+        self.fields['timeslot'].queryset = available_slots
+
+        # ✅ Determine selected tutor from data or initial
+        tutor_id = None
+        if self.data.get('tutor'):  # during POST or dropdown change
+            tutor_id = self.data.get('tutor')
+        elif 'tutor' in kwargs.get('initial', {}):  # from ?tutor= in URL
+            tutor_id = kwargs['initial']['tutor']
+        elif self.user and hasattr(self.user, 'tutor'):
+            tutor_id = self.user.tutor.id  # fallback for logged-in tutor
+
+        # ✅ Filter timeslots for that tutor
+        if tutor_id:
+            try:
+                tutor_id = int(tutor_id)
+                self.fields['timeslot'].queryset = available_slots.filter(tutor_id=tutor_id)
+            except (ValueError, TypeError):
+                pass
 
     def clean(self):
         cleaned_data = super().clean()
@@ -47,21 +56,21 @@ class BookingForm(forms.ModelForm):
         if not tutor or not timeslot:
             raise ValidationError("Please select a tutor and a time slot.")
 
+        # Timeslot must belong to the same tutor
         if timeslot.tutor != tutor:
-            raise ValidationError(
-                "Selected timeslot does not belong to this tutor."
-                )
+            raise ValidationError("Selected timeslot does not belong to this tutor.")
 
+        # Must be at least 24h in advance
         slot_datetime = datetime.combine(timeslot.date, timeslot.start_time)
-        now_plus_24h = datetime.now() + timedelta(hours=24)
-        if slot_datetime < now_plus_24h:
-            raise ValidationError(
-                "Bookings must be made at least 24 hours in advance."
-                )
+        if slot_datetime < (datetime.now() + timedelta(hours=24)):
+            raise ValidationError("Bookings must be made at least 24 hours in advance.")
 
-        if Booking.objects.filter(tutor=tutor, timeslot=timeslot).exists():
-            raise ValidationError(
-                "This timeslot is already booked. Please choose another."
-                )
+        # No double booking
+        if Booking.objects.filter(timeslot=timeslot).exists():
+            raise ValidationError("This timeslot is already booked. Please choose another.")
 
         return cleaned_data
+
+
+
+

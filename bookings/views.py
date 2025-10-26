@@ -18,7 +18,7 @@ class BookingListView(LoginRequiredMixin, ListView):
         return Booking.objects.filter(
             student=self.request.user,
             timeslot__date__gte=timezone.now().date()
-            )
+        )
 
 
 class PastBookingListView(LoginRequiredMixin, ListView):
@@ -28,9 +28,9 @@ class PastBookingListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Booking.objects.filter(
-            student=self.request.user, 
+            student=self.request.user,
             timeslot__date__lt=timezone.now().date()
-            )
+        )
 
 
 class BookingCreateView(LoginRequiredMixin, CreateView):
@@ -43,6 +43,10 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
         """Pass the current user to the form for filtering available tutors and timeslots"""
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
+
+        tutor_id = self.request.GET.get('tutor')
+        if tutor_id:
+            kwargs['initial'] = {'tutor': int(tutor_id)}
         return kwargs
 
     def get_initial(self):
@@ -51,21 +55,23 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
         tutor_id = self.request.GET.get('tutor')
         slot_id = self.request.GET.get('slot')
         if tutor_id:
-            initial['tutor'] = tutor_id
+            initial['tutor'] = int(tutor_id)
         if slot_id:
-            initial['timeslot'] = slot_id
-        return initial
+            initial['timeslot'] = int(slot_id)
+
+        return initial       
 
     def form_valid(self, form):
         """Assign student and show success message"""
         form.instance.student = self.request.user
         messages.success(self.request, "✅ Booking created successfully!")
         return super().form_valid(form)
-    
+
     def form_invalid(self, form):
         messages.error(
             self.request,
-            "❌ There was an error creating your booking. Please try again.")
+            "❌ There was an error creating your booking. Please try again."
+        )
         return super().form_invalid(form)
 
 
@@ -82,13 +88,16 @@ class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.get_object().student == self.request.user
-    
+
     def form_valid(self, form):
         messages.success(self.request, "✅ Booking updated successfully!")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "❌ Could not update booking. Please check the form and try again.")
+        messages.error(
+            self.request,
+            "❌ Could not update booking. Please check the form and try again."
+        )
         return super().form_invalid(form)
 
 
@@ -99,7 +108,7 @@ class BookingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.get_object().student == self.request.user
-    
+
     def delete(self, request, *args, **kwargs):
         messages.success(request, "🗑️ Booking deleted successfully.")
         return super().delete(request, *args, **kwargs)
@@ -114,14 +123,39 @@ class AdminBookingListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return self.request.user.is_superuser
 
 
+class TutorBookingListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    """Display all upcoming bookings for the logged-in tutor"""
+    model = Booking
+    template_name = 'bookings/tutor_bookings.html'
+    context_object_name = 'bookings'
+
+    def test_func(self):
+        # Allow only tutors (not students)
+        return hasattr(self.request.user, "userprofile") and self.request.user.userprofile.role == "tutor"
+
+    def get_queryset(self):
+        """Show only future bookings assigned to this tutor"""
+        from tutors.models import Tutor
+        try:
+            tutor = Tutor.objects.get(user=self.request.user)
+        except Tutor.DoesNotExist:
+            return Booking.objects.none()
+
+        return Booking.objects.filter(
+            tutor=tutor,
+            timeslot__date__gte=timezone.now().date()
+        ).order_by("timeslot__date", "timeslot__start_time")
+
+
+
 class BookingCalendarView(LoginRequiredMixin, TemplateView):
     template_name = 'bookings/calendar.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         timeslots = TimeSlot.objects.filter(
-            date__gte=timezone.now().date()).order_by('date', 'start_time'
-                                                      )
+            date__gte=timezone.now().date()
+        ).order_by('date', 'start_time')
         events = []
         for slot in timeslots:
             events.append({
@@ -133,3 +167,4 @@ class BookingCalendarView(LoginRequiredMixin, TemplateView):
             })
         context['events'] = events
         return context
+

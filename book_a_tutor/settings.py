@@ -188,6 +188,13 @@ STORAGES = {
     },
 }
 
+# allauth
+# Email verification disabled for local development
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = False
+
 # Stripe
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')

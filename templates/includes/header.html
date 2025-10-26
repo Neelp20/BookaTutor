@@ -18,38 +18,47 @@
 
           <!-- Home -->
           <li class="nav-item">
-            <a class="nav-link {% if url_name == 'home' %}active{% endif %}"
-               href="{% url 'home' %}">Home</a>
+            <a class="nav-link {% if url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
           </li>
 
           <!-- Tutors -->
           <li class="nav-item">
-            <a class="nav-link {% if url_name == 'tutors-list' %}active{% endif %}"
-               href="{% url 'tutors-list' %}">Tutors</a>
+            <a class="nav-link {% if url_name == 'tutors-list' %}active{% endif %}" href="{% url 'tutors-list' %}">Tutors</a>
           </li>
 
           {% if user.is_authenticated %}
             <!-- Bookings Dropdown -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle {% if url_name in 'bookings manage-bookings past-bookings' %}active{% endif %}"
-                 href="#" id="bookingDropdown" role="button" data-bs-toggle="dropdown">
+              <a class="nav-link dropdown-toggle {% if url_name in 'bookings manage-bookings past-bookings tutor-manage-bookings' %}active{% endif %}"
+                href="#" id="bookingDropdown" role="button" data-bs-toggle="dropdown">
+                {% if user.userprofile.role == "tutor" %}
+                Tutor Dashboard
+                {% else %}
                 Bookings
+                {% endif %}
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="{% url 'bookings' %}">Create Booking</a></li>
-                <li><a class="dropdown-item" href="{% url 'manage-bookings' %}">Upcoming Bookings</a></li>
-                <li><a class="dropdown-item" href="{% url 'past-bookings' %}">Past Bookings</a></li>
-                <li><a class="dropdown-item text-danger" href="{% url 'manage-bookings' %}">Cancel a Booking</a></li>
+                {% if user.userprofile.role == "tutor" %}
+                  <li><a class="dropdown-item" href="{% url 'tutor-manage-bookings' %}">My Students</a></li>
+                {% else %}
+                <!-- For Students -->
+                  <li><a class="dropdown-item" href="{% url 'bookings' %}">Create Booking</a></li>
+                  <li><a class="dropdown-item" href="{% url 'manage-bookings' %}">Upcoming Bookings</a></li>
+                  <li><a class="dropdown-item" href="{% url 'past-bookings' %}">Past Bookings</a></li>
+                  <li><a class="dropdown-item text-danger" href="{% url 'manage-bookings' %}">Manage / Cancel Bookings</a></li>
+                {% endif %}
 
+                <!-- Admin Section -->
                 {% if user.is_superuser %}
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="{% url 'admin-manage-bookings' %}">All Bookings (Admin)</a></li>
                 {% endif %}
               </ul>
             </li>
+            {% endif %}
 
-            <!-- Tutor Profile Dropdown (for tutors only) -->
-            {% if user.tutor %}
+            <!-- Tutor Profile Dropdown -->
+            {% if user.is_authenticated and user.userprofile.role == "tutor" and user.tutor %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle {% if url_name in 'edit-tutor delete-tutor tutor-detail' %}active{% endif %}"
                    href="#" id="tutorDropdown" role="button" data-bs-toggle="dropdown">
@@ -62,7 +71,7 @@
               </li>
             {% endif %}
 
-            <!-- Admin Management (superuser only) -->
+            <!-- Admin Dropdown -->
             {% if user.is_superuser %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle {% if url_name in 'admin-manage-bookings admin-tutor-list' %}active{% endif %}"
@@ -76,7 +85,7 @@
               </li>
             {% endif %}
 
-            <!-- My Profile Dropdown (for all logged-in users) -->
+            <!-- My Profile -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle {% if url_name in 'profile-detail profile-edit' %}active{% endif %}"
                  href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
@@ -93,23 +102,26 @@
               <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
             </li>
 
-          {% else %}
+          
             <!-- Guest Links -->
             <li class="nav-item">
-              <a class="nav-link {% if url_name == 'account_signup' %}active{% endif %}"
-                 href="{% url 'account_signup' %}">Sign Up</a>
+              <a class="nav-link {% if url_name == 'account_signup' %}active{% endif %}" href="{% url 'account_signup' %}">Sign Up</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if url_name == 'account_login' %}active{% endif %}"
-                 href="{% url 'account_login' %}">Login</a>
+              <a class="nav-link {% if url_name == 'account_login' %}active{% endif %}" href="{% url 'account_login' %}">Login</a>
             </li>
-          {% endif %}
+          
         </ul>
       </div>
     </div>
   </nav>
   {% endwith %}
 </header>
+
+
+
+
+
 
 
 
