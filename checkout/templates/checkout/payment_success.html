@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center mt-5">
+  <h2 class="text-success">✅ Payment Successful!</h2>
+  <p>Your booking has been confirmed. Thank you for choosing Book a Tutor.</p>
+  <a href="{% url 'manage-bookings' %}" class="btn btn-primary">Go to My Bookings</a>
+</div>
+{% endblock %}
