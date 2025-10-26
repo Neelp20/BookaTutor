@@ -16,6 +16,7 @@
                         <th scope="col">Subject</th>
                         <th scope="col">Message</th>
                         <th scope="col">Status</th>
+                        <th scope="col" class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,8 +30,24 @@
                         <td>
                             {% if booking.confirmed %}
                                 <span class="badge bg-success">Confirmed</span>
+                            {% elif booking.rejected %}
+                                <span class="badge bg-danger">Rejected</span>
                             {% else %}
                                 <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if not booking.confirmed and not booking.rejected %}
+                                <form method="post" action="{% url 'confirm-booking' booking.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-success">Confirm</button>
+                                </form>
+                                <form method="post" action="{% url 'reject-booking' booking.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-danger">Reject</button>
+                                </form>
+                            {% else %}
+                                <em class="text-muted">No actions</em>
                             {% endif %}
                         </td>
                     </tr>
