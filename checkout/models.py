@@ -7,9 +7,13 @@ class Payment(models.Model):
     booking = models.OneToOneField(
         Booking, on_delete=models.CASCADE, related_name='payment'
     )
+    stripe_checkout_id = models.CharField(  # renamed for clarity
+        max_length=255, blank=True, null=True,
+        help_text="Stripe Checkout Session ID"
+    )
     stripe_payment_intent = models.CharField(
         max_length=255, blank=True, null=True,
-        help_text="Stripe Payment Intent or Session ID"
+        help_text="Stripe Payment Intent ID"
     )
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     paid = models.BooleanField(default=False)
@@ -20,3 +24,4 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment for {self.booking.student.username} → {self.booking.tutor.user.username} ({'Paid' if self.paid else 'Pending'})"
+

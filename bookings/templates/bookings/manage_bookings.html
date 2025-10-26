@@ -15,6 +15,7 @@
                         <th scope="col">Time</th>
                         <th scope="col">Subject</th>
                         <th scope="col">Message</th>
+                        <th scope="col">Status</th>
                         <th scope="col" class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -26,6 +27,16 @@
                         <td>{{ booking.timeslot.start_time|time:"g:i a" }} - {{ booking.timeslot.end_time|time:"g:i a" }}</td>
                         <td>{{ booking.subject|default:"-" }}</td>
                         <td>{{ booking.message|default:"-" }}</td>
+
+                        <!-- ✅ New: Confirmation Status -->
+                        <td>
+                            {% if booking.confirmed %}
+                                <span class="badge bg-success">Confirmed</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+
                         <td class="text-center">
                             <a href="{% url 'edit-booking' booking.pk %}" class="btn btn-sm btn-warning me-2">Edit</a>
                             <a href="{% url 'delete-booking' booking.pk %}" class="btn btn-sm btn-danger">Delete</a>
@@ -43,4 +54,5 @@
     {% endif %}
 </div>
 {% endblock %}
+
 
