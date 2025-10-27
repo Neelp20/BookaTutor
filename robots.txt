@@ -1,0 +1,3 @@
+User-agent:*
+Disallow:
+Sitemap: https://book-a-tutor-e586c5d4d680.herokuapp.com/sitemap.xml
