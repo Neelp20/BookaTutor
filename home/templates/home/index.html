@@ -7,7 +7,6 @@
 <div class="text-center">
     <div class="hero-image">
         <h1 class="display-4 bold">Welcome to Book A Tutor</h1>
-        <!-- <p class="lead" style="color: darkred;">Find the perfect tutor for your learning journey.</p> -->
 
         {% if user.is_authenticated %}
           <a href="{% url 'tutors-list' %}" class="btn btn-primary btn-lg mt-3">Browse Tutors</a>
