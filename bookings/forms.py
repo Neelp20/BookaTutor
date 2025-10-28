@@ -31,14 +31,14 @@ class BookingForm(forms.ModelForm):
 
         self.fields['timeslot'].queryset = available_slots
 
-        # ✅ Determine selected tutor from data or initial
+       
         tutor_id = None
-        if self.data.get('tutor'):  # during POST or dropdown change
+        if self.data.get('tutor'):
             tutor_id = self.data.get('tutor')
-        elif 'tutor' in kwargs.get('initial', {}):  # from ?tutor= in URL
+        elif 'tutor' in kwargs.get('initial', {}):
             tutor_id = kwargs['initial']['tutor']
         elif self.user and hasattr(self.user, 'tutor'):
-            tutor_id = self.user.tutor.id  # fallback for logged-in tutor
+            tutor_id = self.user.tutor.id 
 
         # ✅ Filter timeslots for that tutor
         if tutor_id:

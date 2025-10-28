@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from tutors.models import Tutor  # Tutor model in tutors app
+from tutors.models import Tutor
 
 
 class TimeSlot(models.Model):

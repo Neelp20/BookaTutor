@@ -110,13 +110,13 @@ SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # allow authentication using either usernames or emails
-ACCOUNT_EMAIL_REQUIRED = True  # email is required to register for the site
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # verifying email is mandatory
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True 
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
-ACCOUNT_USERNAME_MIN_LENGTH = 4  # minimum username length of four characters
-LOGIN_URL = '/accounts/login/'  # specify a login url and a
-LOGIN_REDIRECT_URL = '/'  # url to redirect back to after logging in
+ACCOUNT_USERNAME_MIN_LENGTH = 4 
+LOGIN_URL = '/accounts/login/'  
+LOGIN_REDIRECT_URL = '/' 
 
 WSGI_APPLICATION = 'book_a_tutor.wsgi.application'
 
