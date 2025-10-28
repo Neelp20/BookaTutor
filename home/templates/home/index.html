@@ -11,8 +11,40 @@
         {% if user.is_authenticated %}
           <a href="{% url 'tutors-list' %}" class="btn btn-primary btn-lg mt-3">Browse Tutors</a>
         {% else %}
-          <a href="{% url 'account_signup' %}" class="btn btn-success btn-lg mt-3">Get Started</a>
+          <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg mt-3">Get Started</a>
         {% endif %}
     </div>
+</div>
+<div class="container-about-us mt-3 text-center">
+  <div class="content">
+    <h2 class="bold">Find, book and learn - all in one place</h2>
+    <p>
+      Book a Tutor is an online platform designed to connect students with qualified tutors 
+      in just a few clicks.<br> Whether you need help mastering a subject, preparing for exams, 
+      or improving your study skills,<br> we make finding the right tutor simple, fast, and secure.
+    </p>
+  </div>
+  <div class="mb-4">
+    <h4>💡 How It Works</h4>
+    <p>
+        Students can browse tutor profiles, view subjects and hourly rates, and book sessions <br>
+        directly through our website. Tutors can manage their availability, confirm bookings, <br>
+        and build lasting relationships with learners — all within one easy-to-use dashboard.
+    </p>
+  </div>
+  <div class="text-center mt-4">
+    <h4>🌐 Why Choose Book a Tutor?</h4>
+    <ul class="list-unstyled mt-3">
+      <li>✔ Easy online booking and secure management system</li>
+      <li>✔ Verified tutors with diverse expertise</li>
+      <li>✔ Flexible scheduling to suit your time zone</li>
+      <li>✔ Transparent communication between students and tutors</li>
+    </ul>
+  </div>
+  <div class="text-center mt-3">
+    <a href="{% url 'tutors-list' %}" class="btn btn-primary btn-lg">
+      Find Your Tutor
+    </a>
+  </div>
 </div>
 {% endblock %}
