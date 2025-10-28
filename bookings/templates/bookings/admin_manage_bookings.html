@@ -36,8 +36,8 @@
                             {{ booking.tutor.user.username }}
                         {% endif %}
                     </td>
-                    <!-- <td>{{ booking.date|date:"B d, Y" }}</td> -->
-                    <!-- <td>{{ booking.time|time:"g:i a" }}</td> -->
+                    <td>{{ booking.date|date:"b d,Y" }}</td>
+                    <td>{{ booking.time|time:"g:i a" }} - {{ booking.timeslot.end_time|time:"g:i a" }}</td>
                     <td>{{ booking.subject|default:"-" }}</td>
                     <td>{{ booking.message|default:"-" }}</td>
 
