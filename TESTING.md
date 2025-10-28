@@ -112,3 +112,65 @@ Form successfully submits and alert is shown to the user of successful editing/d
 Actual:
 
 Form successfully submits and a alert is shown to the user of successful editing/deleting.
+
+<hr>
+
+**Tutor Page**
+
+Description:
+
+Search option by subjects on tutors page
+
+Steps:
+
+1. Navigate to [Tutors page](https://book-a-tutor-e586c5d4d680.herokuapp.com/) - Login is required first.
+2. Enter the following details:
+    - Select subject from the dropdown
+    - It shows the tutors, whoch teaches that subject
+
+
+Expected:
+
+Page should show the tutors teaching that particular subject
+
+Actual:
+
+Page has shown the tutors teaching that subject
+
+<hr>
+
+**Navigation Links**
+
+Testing was performed to ensure all navigation links on the respective pages, navigated to the correct pages as per design. This was done by clicking on the navigation links on each page.
+
+* Home -> index.html - Visible to all
+  * Bookings (Drop Down):
+    * Create Booking -> bookings.html - Visible to logged in users
+    * Upcoming BookingS -> manage_bookings.html - Visible to logged in users
+    * Past BookingS -> past_bookings.html - Visible to logged in users
+    * All Bookings(Admin) --> admin_manage_bookings.html - visible to admin only
+  * Menus (Drop Down):
+    * View Menus -> menu.html - Visible to all
+    * Create Menu -> create_menu.html - Visible to staff
+    * Create Menu Item -> create_menu_items.html - Visible to staff
+    * Create Allergy Label -> create_allergy_label.html - Visible to staff
+    * Manage Menu -> manage_menu.html - Visible to staff
+  * Login -> login.html - Visible to logged out users
+  * Register -> signup.html - Visible to logged out users
+  * Logout -> logout.html - Visible to logged in users
+
+All navigation links directed to the corect pages as expected.
+
+<hr>
+
+**Footer**
+
+Testing was performed on the footer links by clicking the font awesome icons and ensuring that the facebook icon opened facebook in a new tab. These behaved as expected.
+
+## Negative Testing
+
+Tests were performed on the create booking to ensure that:
+
+1. A userr cannot book a date in the past
+2. A user cannot book for less than 24hrs.
+3. Forms cannot be submitted when required fields are empty
