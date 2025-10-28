@@ -86,3 +86,29 @@ Form successfully submits and alert is shown to the user of successful booking.
 Actual:
 
 Form successfully submits and a alert is shown to the user of successful booking.
+
+**Edit Booking Forms**
+
+Description:
+
+Ensure a booking can be edited.
+
+Steps:
+
+1. Navigate to [Manage booking page](https://book-a-tutor-e586c5d4d680.herokuapp.com/) - Login is required first.
+2. Enter the following:
+    - username: test@student
+    - Your password: 
+3. Click sign in
+4. Bookings page:
+    - Manage bookings
+    - Edit
+    - user gets confirmation post edit/delete
+
+Expected:
+
+Form successfully submits and alert is shown to the user of successful editing/deleting.
+
+Actual:
+
+Form successfully submits and a alert is shown to the user of successful editing/deleting.
