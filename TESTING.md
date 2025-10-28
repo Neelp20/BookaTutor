@@ -194,6 +194,16 @@ Testing was focused to ensure the following criteria were met:
 - Aria properties have been implemented correctly
 - WCAG 2.1 Coding best practices being followed
 
+## Lighthouse Report
+
+Lighthouse report showed areas for improvement on SEO and Best practices. Unfortunately I did not find a way to improve this.
+
+![Home](docs/testing/home_lighthouse.png)
+
+![Bookings](docs/testing/bookings_lighthouse.png)
+
+![Tutors](docs/testing/tutors_lighthouse.png)
+
 ## Responsiveness
 
 All pages were tested to ensure responsiveness on screen sizes from 320px and upwards as defined in WCAG 2.1 Reflow criteria for responsive design on Chrome, Edge, Firefox and Opera browsers.
