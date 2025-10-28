@@ -23,13 +23,20 @@
                 {% for booking in bookings %}
                 <tr>
                     <td>
+                       {% if booking.user.get_full_name %}
+                           {{ booking.user.get_full_name }}
+                       {% else %}
+                           {{ booking.user.username }}
+                       {% endif %}
+                    </td>
+                    <td>
                         {% if booking.tutor.user.get_full_name %}
                             {{ booking.tutor.user.get_full_name }}
                         {% else %}
                             {{ booking.tutor.user.username }}
                         {% endif %}
                     </td>
-                    <td>{{ booking.date|date:"M d, Y" }}</td>
+                    <td>{{ booking.date|date:"B d, Y" }}</td>
                     <td>{{ booking.time|time:"g:i a" }}</td>
                     <td>{{ booking.subject|default:"-" }}</td>
                     <td>{{ booking.message|default:"-" }}</td>
