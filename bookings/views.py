@@ -121,6 +121,14 @@ class AdminBookingListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self):
         return self.request.user.is_superuser
+    
+    def get_queryset(self):
+        """Show all upcoming bookings for admin with related data."""
+        return (
+            Booking.objects
+            .select_related("student", "tutor__user", "timeslot")
+            .order_by("timeslot__date", "timeslot__start_time")
+        )
 
 
 class TutorBookingListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
