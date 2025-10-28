@@ -36,8 +36,13 @@
                             {{ booking.tutor.user.username }}
                         {% endif %}
                     </td>
-                    <td>{{ booking.date|date:"M d,Y" }}</td>
-                    <td>{{ booking.time|time:"g:i a" }} - {{ booking.timeslot.end_time|time:"g:i a" }}</td>
+                    {% if booking.timeslot %}
+                        <td>{{ booking.timeslot.date|date:"M d, Y" }}</td>
+                        <td>{{ booking.timeslot.start_time|time:"g:i a" }} - {{ booking.timeslot.end_time|time:"g:i a" }}</td>
+                    {% else %}
+                        <td colspan="2" class="text-muted">No timeslot assigned</td>
+                    {% endif %}
+                    
                     <td>{{ booking.subject|default:"-" }}</td>
                     <td>{{ booking.message|default:"-" }}</td>
 
