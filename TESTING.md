@@ -58,3 +58,31 @@ User is logged out
 Actual:
 
 User is logged out
+
+**Booking Forms**
+
+Description:
+
+Ensure a new booking can be created.
+
+Steps:
+
+1. Navigate to [page](https://book-a-tutor-e586c5d4d680.herokuapp.com/) - Login is required first.
+2. Enter the following:
+    - username: test@student
+    - Your password: 
+3. Click sign in
+4. Bookings page:
+    - Create bookings
+    - Select tutor from dropdown
+    - Enter subject
+    - Any message
+    - Book now
+
+Expected:
+
+Form successfully submits and alert is shown to the user of successful booking.
+
+Actual:
+
+Form successfully submits and a alert is shown to the user of successful booking.
