@@ -59,7 +59,7 @@ Actual:
 
 User is logged out
 
-**Booking Forms**
+**Booking page**
 
 Description:
 
@@ -87,7 +87,7 @@ Actual:
 
 Form successfully submits and a alert is shown to the user of successful booking.
 
-**Edit Booking Forms**
+**Edit Booking page**
 
 Description:
 
