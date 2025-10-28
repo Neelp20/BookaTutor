@@ -23,10 +23,10 @@
                 {% for booking in bookings %}
                 <tr>
                     <td>
-                       {% if booking.user.get_full_name %}
-                           {{ booking.user.get_full_name }}
+                       {% if booking.student.get_full_name %}
+                           {{ booking.student.get_full_name }}
                        {% else %}
-                           {{ booking.user.username }}
+                           {{ booking.student.username }}
                        {% endif %}
                     </td>
                     <td>
