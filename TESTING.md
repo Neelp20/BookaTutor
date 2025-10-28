@@ -40,3 +40,21 @@ Actual:
 User is successfully logged in and redirected to the home page
 
 <hr>
+
+Description:
+
+Ensure a user can sign out
+
+Steps:
+
+1. Login to the website
+2. Click the logout button
+3. Click confirm on the confirm logout page
+
+Expected:
+
+User is logged out
+
+Actual:
+
+User is logged out
