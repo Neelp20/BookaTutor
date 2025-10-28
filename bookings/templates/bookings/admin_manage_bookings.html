@@ -22,10 +22,15 @@
             <tbody>
                 {% for booking in bookings %}
                 <tr>
-                    <td>{{ booking.student.get_full_name }}</td>
-                    <td>{{ booking.tutor.user.get_full_name }}</td>
-                    <td>{{ booking.timeslot.date|date:"M d, Y" }}</td>
-                    <td>{{ booking.timeslot.start_time|time:"g:i a" }} - {{ booking.timeslot.end_time|time:"g:i a" }}</td>
+                    <td>
+                        {% if booking.tutor.user.get_full_name %}
+                            {{ booking.tutor.user.get_full_name }}
+                        {% else %}
+                            {{ booking.tutor.user.username }}
+                        {% endif %}
+                    </td>
+                    <td>{{ booking.date|date:"M d, Y" }}</td>
+                    <td>{{ booking.time|time:"g:i a" }}</td>
                     <td>{{ booking.subject|default:"-" }}</td>
                     <td>{{ booking.message|default:"-" }}</td>
 
