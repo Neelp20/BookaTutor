@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 
 
-# @receiver(post_save, sender=User)
+@receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
     Create or update UserProfile whenever a User is created or saved.
