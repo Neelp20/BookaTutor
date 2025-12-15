@@ -14,7 +14,7 @@
       </button>
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav me-2 mb-2">
+        <ul class="navbar-nav me-2 mb-2 mb-lg-0 align-items-lg-center">
 
           <!-- Home -->
           <li class="nav-item">
@@ -102,12 +102,13 @@
 
           {% else %}
             <!-- Guest Links -->
-            <li class="nav-item">
-              <a class="nav-link {% if url_name == 'account_signup' %}active{% endif %}" href="{% url 'account_signup' %}">Sign Up</a>
-            </li>
-            <li class="nav-item">
+             <li class="nav-item">
               <a class="nav-link {% if url_name == 'account_login' %}active{% endif %}" href="{% url 'account_login' %}">Login</a>
             </li>
+            <li class="nav-item ms-lg-2">
+              <a class="btn btn-primary btn-sm {% if url_name == 'account_signup' %}active{% endif %}" href="{% url 'account_signup' %}">Sign Up</a>
+            </li>
+            
           {% endif %}
           
         </ul>
