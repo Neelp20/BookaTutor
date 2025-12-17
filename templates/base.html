@@ -56,11 +56,11 @@
 
     <title>Book a Tutor {% block extra_title %}{% endblock %}</title>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     {% include 'includes/header.html' %}
 
 
-    <main class="container mt-4">
+    <main class="container mt-4 flex-grow-1">
       {% block content %}
       {% endblock %}
     </main>
