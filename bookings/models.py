@@ -7,7 +7,9 @@ from tutors.models import Tutor
 
 class TimeSlot(models.Model):
     """Available slot for a tutor."""
-    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name='time_slots')
+    tutor = models.ForeignKey(
+        Tutor, on_delete=models.CASCADE, related_name='time_slots'
+        )
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
@@ -28,9 +30,15 @@ class TimeSlot(models.Model):
 
 class Booking(models.Model):
     """Booking made by a student for a tutor's time slot."""
-    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
-    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name='bookings')
-    timeslot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, related_name='bookings')
+    student = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='bookings'
+        )
+    tutor = models.ForeignKey(
+        Tutor, on_delete=models.CASCADE, related_name='bookings'
+        )
+    timeslot = models.ForeignKey(
+        TimeSlot, on_delete=models.CASCADE, related_name='bookings'
+        )
     subject = models.CharField(max_length=255, blank=True)
     message = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

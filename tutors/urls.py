@@ -4,7 +4,6 @@ from .views import TutorUpdateView, TutorDeleteView
 
 
 urlpatterns = [
-    # path('', views.tutors_list, name='tutors_list'),
     path('', TutorListView.as_view(), name='tutors-list'),
     path('<int:pk>/', TutorDetailView.as_view(), name='tutor-detail'),
     path('create/', TutorCreateView.as_view(), name='create-tutor'),

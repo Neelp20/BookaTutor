@@ -1,4 +1,6 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView
+)
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -82,4 +84,3 @@ class TutorDeleteView(DeleteView):
 
     def get_queryset(self):
         return Tutor.objects.filter(user=self.request.user)
-

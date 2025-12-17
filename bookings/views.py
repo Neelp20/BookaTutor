@@ -40,7 +40,9 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('manage-bookings')
 
     def get_form_kwargs(self):
-        """Pass the current user to the form for filtering available tutors and timeslots"""
+        """Pass the current user to the form for filtering 
+        available tutors and timeslots
+        """
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
 
@@ -59,7 +61,7 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
         if slot_id:
             initial['timeslot'] = int(slot_id)
 
-        return initial       
+        return initial
 
     def form_valid(self, form):
         """Assign student and show success message"""
@@ -121,7 +123,7 @@ class AdminBookingListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self):
         return self.request.user.is_superuser
-    
+
     def get_queryset(self):
         """Show all upcoming bookings for admin with related data."""
         return (
@@ -207,5 +209,3 @@ class RejectBookingView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         booking.save()
         messages.warning(request, f"❌ Booking with {booking.student.username} rejected.")
         return redirect("tutor-manage-bookings")
-
-

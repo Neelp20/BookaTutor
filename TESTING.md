@@ -200,13 +200,19 @@ All pages were run through the [w3 HTML Validator](https://validator.w3.org/). I
 
 Due to the django templating language code used in the HTML files, these could not be copy and pasted into the validator and due to the secured views, pages with login required or a secured view cannot be validated by direct URI. To test the validation on the files, open the page to validate, right click and view page source. Paste the raw html code into the validator as this will be only the HTML rendered code.
 
-![HTML Validator]()
+![HTML Validator](docs/testing/html_testing.png)
 
 All pages were run through the official [Pep8ci](https://pep8ci.herokuapp.com/) validator to ensure all code was pep8 compliant. Some errors were shown due to no newline at end of file and missing white space after. All of these errors were resolved but still showing in validator.
 
 In settings.py file - The django auto generated code for AUTH_PASSWORD_VALIDATORS were showing up as lines too long. I could not find a way to split these lines but since they were auto generated and not my own custom code, I hope this is acceptable.
 
+In bookings/models.py,urls.py - Line too long errors were shown but couldn't find way to resolve them.
+
+Rest all files were showing as " All clear, no errors found" in CI Python Linter.
+
 ![PEP8ci](docs/testing/pep8_testing.png)
+
+![PEP8ci](docs/testing/linter2.png)
 
 JavaScript code was run through [JSHINT](https://jshint.com) javascript validator.
 
